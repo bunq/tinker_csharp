@@ -295,3 +295,5 @@ __pycache__/
 
 # End of https://www.gitignore.io/api/csharp
 
+# SDK configuration
+*.conf
