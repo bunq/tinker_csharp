@@ -295,5 +295,9 @@ __pycache__/
 
 # End of https://www.gitignore.io/api/csharp
 
-# SDK configuration
+
+# JetBrains IDE config directory
+.idea
+
+# bunq configuration files
 *.conf
