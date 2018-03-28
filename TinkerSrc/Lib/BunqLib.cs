@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using Bunq.Sdk.Context;
 using Bunq.Sdk.Exception;
 using Bunq.Sdk.Http;
@@ -14,6 +15,8 @@ namespace TinkerSrc.Lib
 {
     public class BunqLib
     {
+        private const string ErrorInsufficientAuthentication = "Insufficient authentication";
+
         private ApiEnvironmentType EnvironmentType { get; set; }
 
         public BunqLib(ApiEnvironmentType environmentType)
@@ -69,7 +72,7 @@ namespace TinkerSrc.Lib
         private bool IsSandboxUserReset(string forbiddenExceptionMessage)
         {
             return ApiEnvironmentType.SANDBOX.Equals(EnvironmentType)
-                   && forbiddenExceptionMessage.Contains("Insufficient authentication");
+                   && Regex.IsMatch(forbiddenExceptionMessage, ErrorInsufficientAuthentication);
         }
 
         private string DetermineBunqConfFileName()
