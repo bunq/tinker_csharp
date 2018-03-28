@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using Bunq.Sdk.Context;
 using Bunq.Sdk.Exception;
 using Bunq.Sdk.Http;
@@ -14,6 +15,8 @@ namespace TinkerSrc.Lib
 {
     public class BunqLib
     {
+        private const string ErrorInsufficientAuthentication = "Insufficient authentication";
+
         private ApiEnvironmentType EnvironmentType { get; set; }
 
         public BunqLib(ApiEnvironmentType environmentType)
@@ -39,11 +42,37 @@ namespace TinkerSrc.Lib
                 throw new BunqException("Could not find a production configuration.");
             }
 
-            var apiContext = ApiContext.Restore(DetermineBunqConfFileName());
-            apiContext.EnsureSessionActive();
-            apiContext.Save(DetermineBunqConfFileName());
+            try
+            {
+                var apiContext = ApiContext.Restore(DetermineBunqConfFileName());
+                apiContext.EnsureSessionActive();
+                apiContext.Save(DetermineBunqConfFileName());
 
-            BunqContext.LoadApiContext(apiContext);
+                BunqContext.LoadApiContext(apiContext);
+            }
+            catch (ForbiddenException forbiddenException)
+            {
+                HandleForbiddenExceeption(forbiddenException);
+            }
+        }
+
+        private void HandleForbiddenExceeption(ForbiddenException forbiddenException)
+        {
+            if (IsSandboxUserReset(forbiddenException.Message))
+            {
+                File.Delete(DetermineBunqConfFileName());
+                SetupContext();
+            }
+            else
+            {
+                throw forbiddenException;
+            }
+        }
+
+        private bool IsSandboxUserReset(string forbiddenExceptionMessage)
+        {
+            return ApiEnvironmentType.SANDBOX.Equals(EnvironmentType)
+                   && Regex.IsMatch(forbiddenExceptionMessage, ErrorInsufficientAuthentication);
         }
 
         private string DetermineBunqConfFileName()
