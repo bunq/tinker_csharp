@@ -15,7 +15,6 @@ namespace TinkerSrc.Lib
 {
     public class BunqLib
     {
-        private const string ErrorInsufficientAuthentication = "Insufficient authentication";
 
         private ApiEnvironmentType EnvironmentType { get; set; }
 
@@ -25,7 +24,7 @@ namespace TinkerSrc.Lib
             SetupContext();
         }
 
-        private void SetupContext()
+        private void SetupContext(bool resetConfigIfNeeded = true)
         {
             if (File.Exists(DetermineBunqConfFileName()))
             {
@@ -52,16 +51,23 @@ namespace TinkerSrc.Lib
             }
             catch (ForbiddenException forbiddenException)
             {
-                HandleForbiddenExceeption(forbiddenException);
+                if (resetConfigIfNeeded)
+                {
+                    HandleForbiddenExceeption(forbiddenException);
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
         private void HandleForbiddenExceeption(ForbiddenException forbiddenException)
         {
-            if (IsSandboxUserReset(forbiddenException.Message))
+            if (ApiEnvironmentType.SANDBOX.Equals(EnvironmentType))
             {
                 File.Delete(DetermineBunqConfFileName());
-                SetupContext();
+                SetupContext(false);
             }
             else
             {
@@ -69,22 +75,9 @@ namespace TinkerSrc.Lib
             }
         }
 
-        private bool IsSandboxUserReset(string forbiddenExceptionMessage)
-        {
-            return ApiEnvironmentType.SANDBOX.Equals(EnvironmentType)
-                   && Regex.IsMatch(forbiddenExceptionMessage, ErrorInsufficientAuthentication);
-        }
-
         private string DetermineBunqConfFileName()
         {
-            if (ApiEnvironmentType.PRODUCTION.Equals(EnvironmentType))
-            {
-                return "bunq-production.conf";
-            }
-            else
-            {
-                return "bunq-sandbox.conf";
-            }
+            return ApiEnvironmentType.PRODUCTION.Equals(EnvironmentType) ? BunqConnfProduction : BunqConfSandbox;
         }
 
         public void UpdateContext()
