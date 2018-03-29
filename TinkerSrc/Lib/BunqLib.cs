@@ -20,10 +20,8 @@ namespace TinkerSrc.Lib
         /// Error constatns.
         /// </summary>
         private const string ErrorCouldNotFindAProductionConfiguration = "Could not find a production configuration.";
-
         private const string ErrorCouldNotDetermineUser = "Could not determine user";
         private const string ErrorUnknownSdkUserType = "Unknown SDK user type.";
-
         private const string ErrorCouldNotFindAliasTypeIban =
             "Could not find IBAN alias linked to MonetaryAccountBank \"%s\"";
 
@@ -31,14 +29,12 @@ namespace TinkerSrc.Lib
         /// Confic constants.
         /// </summary>
         private const string BunqConnfProduction = "bunq-production.conf";
-
         private const string BunqConfSandbox = "bunq-sandbox.conf";
 
         /// <summary>
         /// Type constatns.
         /// </summary>
         private const string MonetaryAccountStatusActive = "ACTIVE";
-
         private const string AliasTypeIban = "IBAN";
 
         private ApiEnvironmentType EnvironmentType { get; set; }
