@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using Bunq.Sdk.Context;
@@ -15,7 +16,26 @@ namespace TinkerSrc.Lib
 {
     public class BunqLib
     {
-        private const string ErrorInsufficientAuthentication = "Insufficient authentication";
+        /// <summary>
+        /// Error constatns.
+        /// </summary>
+        private const string ErrorCouldNotFindAProductionConfiguration = "Could not find a production configuration.";
+        private const string ErrorCouldNotDetermineUser = "Could not determine user";
+        private const string ErrorUnknownSdkUserType = "Unknown SDK user type.";
+        private const string ErrorCouldNotFindAliasTypeIban =
+            "Could not find IBAN alias linked to MonetaryAccountBank \"%s\"";
+
+        /// <summary>
+        /// Confic constants.
+        /// </summary>
+        private const string BunqConnfProduction = "bunq-production.conf";
+        private const string BunqConfSandbox = "bunq-sandbox.conf";
+
+        /// <summary>
+        /// Type constatns.
+        /// </summary>
+        private const string MonetaryAccountStatusActive = "ACTIVE";
+        private const string AliasTypeIban = "IBAN";
 
         private ApiEnvironmentType EnvironmentType { get; set; }
 
@@ -25,7 +45,7 @@ namespace TinkerSrc.Lib
             SetupContext();
         }
 
-        private void SetupContext()
+        private void SetupContext(bool resetConfigIfNeeded = true)
         {
             if (File.Exists(DetermineBunqConfFileName()))
             {
@@ -39,7 +59,7 @@ namespace TinkerSrc.Lib
             }
             else
             {
-                throw new BunqException("Could not find a production configuration.");
+                throw new BunqException(ErrorCouldNotFindAProductionConfiguration);
             }
 
             try
@@ -52,16 +72,23 @@ namespace TinkerSrc.Lib
             }
             catch (ForbiddenException forbiddenException)
             {
-                HandleForbiddenExceeption(forbiddenException);
+                if (resetConfigIfNeeded)
+                {
+                    HandleForbiddenExceeption(forbiddenException);
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
         private void HandleForbiddenExceeption(ForbiddenException forbiddenException)
         {
-            if (IsSandboxUserReset(forbiddenException.Message))
+            if (ApiEnvironmentType.SANDBOX.Equals(EnvironmentType))
             {
                 File.Delete(DetermineBunqConfFileName());
-                SetupContext();
+                SetupContext(false);
             }
             else
             {
@@ -69,22 +96,9 @@ namespace TinkerSrc.Lib
             }
         }
 
-        private bool IsSandboxUserReset(string forbiddenExceptionMessage)
-        {
-            return ApiEnvironmentType.SANDBOX.Equals(EnvironmentType)
-                   && Regex.IsMatch(forbiddenExceptionMessage, ErrorInsufficientAuthentication);
-        }
-
         private string DetermineBunqConfFileName()
         {
-            if (ApiEnvironmentType.PRODUCTION.Equals(EnvironmentType))
-            {
-                return "bunq-production.conf";
-            }
-            else
-            {
-                return "bunq-sandbox.conf";
-            }
+            return ApiEnvironmentType.PRODUCTION.Equals(EnvironmentType) ? BunqConnfProduction : BunqConfSandbox;
         }
 
         public void UpdateContext()
@@ -104,7 +118,7 @@ namespace TinkerSrc.Lib
             }
             else
             {
-                throw new BunqException("Unknown SDK user type.");
+                throw new BunqException(ErrorUnknownSdkUserType);
             }
         }
 
@@ -117,7 +131,7 @@ namespace TinkerSrc.Lib
 
             foreach (var monetaryAccountBank in allMonetaryAccountBank)
             {
-                if (monetaryAccountBank.Status.Equals("ACTIVE"))
+                if (monetaryAccountBank.Status.Equals(MonetaryAccountStatusActive))
                 {
                     allMonetaryAccountBankActive.Add(monetaryAccountBank);
                 }
@@ -130,7 +144,7 @@ namespace TinkerSrc.Lib
         {
             foreach (var alias in monetaryAccountBank.Alias)
             {
-                if (alias.Type.Equals("IBAN"))
+                if (alias.Type.Equals(AliasTypeIban))
                 {
                     return alias;
                 }
@@ -138,7 +152,7 @@ namespace TinkerSrc.Lib
 
             throw new BunqException(
                 string.Format(
-                    "Could not find IBAN alias linked to MonetaryAccountBank \"%s\"",
+                    ErrorCouldNotFindAliasTypeIban,
                     monetaryAccountBank.Description
                 )
             );
@@ -170,15 +184,8 @@ namespace TinkerSrc.Lib
         {
             var labelIban = card.LabelMonetaryAccountCurrent.LabelMonetaryAccount.Iban;
 
-            foreach (var monetaryAccountBank in allMonetaryAccountBank)
-            {
-                if (labelIban.Equals(GetPointerIbanFromMonetaryAccountBank(monetaryAccountBank).Value))
-                {
-                    return monetaryAccountBank;
-                }
-            }
-
-            return null;
+            return allMonetaryAccountBank.FirstOrDefault(monetaryAccountBank =>
+                labelIban.Equals(GetPointerIbanFromMonetaryAccountBank(monetaryAccountBank).Value));
         }
 
         public List<Pointer> GetAllUserAlias()
@@ -193,7 +200,7 @@ namespace TinkerSrc.Lib
             }
             else
             {
-                throw new BunqException("Could not determine user");
+                throw new BunqException(ErrorCouldNotDetermineUser);
             }
         }
 
@@ -206,13 +213,14 @@ namespace TinkerSrc.Lib
             httpClient.DefaultRequestHeaders.Add("X-Bunq-Language", "en_US");
             httpClient.DefaultRequestHeaders.Add("X-Bunq-Region", "en_US");
             httpClient.DefaultRequestHeaders.Add("User-Agent", "hoi");
-            
+
             var requestTask = httpClient.PostAsync("https://sandbox.public.api.bunq.com/v1/sandbox-user", null);
             requestTask.Wait();
-            
+
             var responseString = requestTask.Result.Content.ReadAsStringAsync().Result;
             var responseJson = BunqJsonConvert.DeserializeObject<JObject>(responseString);
-            return BunqJsonConvert.DeserializeObject<SandboxUser>(responseJson.First.First.First.First.First.ToString());
+            return BunqJsonConvert.DeserializeObject<SandboxUser>(responseJson.First.First.First.First.First
+                .ToString());
         }
     }
 }
