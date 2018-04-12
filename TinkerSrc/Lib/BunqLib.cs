@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Bunq.Sdk.Context;
 using Bunq.Sdk.Exception;
 using Bunq.Sdk.Http;
@@ -36,6 +37,15 @@ namespace TinkerSrc.Lib
         /// </summary>
         private const string MonetaryAccountStatusActive = "ACTIVE";
         private const string AliasTypeIban = "IBAN";
+        private const string AliasTypeEmail = "EMAIL";
+        private const string CurrencyEur = "EUR";
+
+        private const string RequestSpendingMoneyAmount = "500.0";
+        private const string RequestSpendingMoneyRecipient = "sugardaddy@bunq.com";
+        private const string RequestSpendingMoneyDescription = "Requesting some spending money.";
+        private const int RequestSpendingMoneyWaitTimeMilliseconds = 1000;
+
+        private const double BalanceZero = 0.0;
 
         private ApiEnvironmentType EnvironmentType { get; set; }
 
@@ -43,6 +53,7 @@ namespace TinkerSrc.Lib
         {
             EnvironmentType = environmentType;
             SetupContext();
+            RequestSpendingMoneyIfNeeded();
         }
 
         private void SetupContext(bool resetConfigIfNeeded = true)
@@ -214,13 +225,33 @@ namespace TinkerSrc.Lib
             httpClient.DefaultRequestHeaders.Add("X-Bunq-Region", "en_US");
             httpClient.DefaultRequestHeaders.Add("User-Agent", "hoi");
 
-            var requestTask = httpClient.PostAsync("https://sandbox.public.api.bunq.com/v1/sandbox-user", null);
+            var requestTask = httpClient.PostAsync(ApiEnvironmentType.SANDBOX.BaseUri + "sandbox-user", null);
             requestTask.Wait();
 
             var responseString = requestTask.Result.Content.ReadAsStringAsync().Result;
             var responseJson = BunqJsonConvert.DeserializeObject<JObject>(responseString);
             return BunqJsonConvert.DeserializeObject<SandboxUser>(responseJson.First.First.First.First.First
                 .ToString());
+        }
+
+        private void RequestSpendingMoneyIfNeeded()
+        {
+            if (ShouldRequestSpendingMoney())
+            {
+                RequestInquiry.Create(
+                    new Amount(RequestSpendingMoneyAmount, CurrencyEur),
+                    new Pointer(AliasTypeEmail, RequestSpendingMoneyRecipient),
+                    RequestSpendingMoneyDescription,
+                    false
+                );
+                Thread.Sleep(RequestSpendingMoneyWaitTimeMilliseconds);
+            }
+        }
+
+        private bool ShouldRequestSpendingMoney()
+        {
+            return ApiEnvironmentType.SANDBOX.Equals(EnvironmentType)
+                   && double.Parse(BunqContext.UserContext.PrimaryMonetaryAccountBank.Balance.Value) <= BalanceZero;
         }
     }
 }
