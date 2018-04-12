@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Bunq.Sdk.Context;
 using Bunq.Sdk.Exception;
 using Bunq.Sdk.Http;
@@ -42,6 +43,7 @@ namespace TinkerSrc.Lib
         private const string RequestSpendingMoneyAmount = "500.0";
         private const string RequestSpendingMoneyRecipient = "sugardaddy@bunq.com";
         private const string RequestSpendingMoneyDescription = "Requesting some spending money.";
+        private const int RequestSpendingMoneyWaitTimeMilliseconds = 1000;
 
         private const double BalanceZero = 0.0;
 
@@ -234,8 +236,7 @@ namespace TinkerSrc.Lib
 
         private void RequestSpendingMoneyIfNeeded()
         {
-            if (ApiEnvironmentType.SANDBOX.Equals(EnvironmentType)
-                && double.Parse(BunqContext.UserContext.PrimaryMonetaryAccountBank.Balance.Value) <= BalanceZero)
+            if (ShouldRequestSpendingMoney())
             {
                 RequestInquiry.Create(
                     new Amount(RequestSpendingMoneyAmount, CurrencyEur),
@@ -243,7 +244,14 @@ namespace TinkerSrc.Lib
                     RequestSpendingMoneyDescription,
                     false
                 );
+                Thread.Sleep(RequestSpendingMoneyWaitTimeMilliseconds);
             }
+        }
+
+        private bool ShouldRequestSpendingMoney()
+        {
+            return ApiEnvironmentType.SANDBOX.Equals(EnvironmentType)
+                   && double.Parse(BunqContext.UserContext.PrimaryMonetaryAccountBank.Balance.Value) <= BalanceZero;
         }
     }
 }
