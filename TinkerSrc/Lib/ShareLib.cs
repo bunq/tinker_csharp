@@ -18,6 +18,8 @@ namespace TinkerSrc.Lib
         private const string OptionCallbackUrl = "url=";
         private const string OptionRecipient = "recipient=";
 
+        private const string PointerTypePhone = "PHONE_NUMBER";
+
         private static ApiEnvironmentType _environmentType = ApiEnvironmentType.SANDBOX;
         
         public static ApiEnvironmentType DetermineEnvironmentType(string[] args)
@@ -179,11 +181,11 @@ namespace TinkerSrc.Lib
             Console.Out.Write(Environment.NewLine + "   User");
             
             Console.Out.Write(@"
-  ┌────────────────┬───────────────────────────────────────────────────────
-  │ ID             │ " + id + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Username       │ " + displayName + @"
-  └────────────────┴───────────────────────────────────────────────────────
+  ┌───────────────────┬────────────────────────────────────────────────────
+  │ ID                │ " + id + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Username          │ " + displayName + @"
+  └───────────────────┴────────────────────────────────────────────────────
 ");
         }
 
@@ -202,12 +204,12 @@ namespace TinkerSrc.Lib
             var pointerIban = BunqLib.GetPointerIbanFromMonetaryAccountBank(monetaryAccountBank);
 
             Console.Out.Write(@"
-  ┌────────────────┬───────────────────────────────────────────────────────
-  │ ID             │ " + monetaryAccountBank.Id + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Description    │ " + monetaryAccountBank.Description + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ IBAN           │ " + pointerIban.Value);
+  ┌───────────────────┬────────────────────────────────────────────────────
+  │ ID                │ " + monetaryAccountBank.Id + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Description       │ " + monetaryAccountBank.Description + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ IBAN              │ " + pointerIban.Value);
 
             if (monetaryAccountBank.Balance == null)
             {
@@ -216,11 +218,11 @@ namespace TinkerSrc.Lib
             else
             {
                 Console.Out.Write(@"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Balance        │ " + monetaryAccountBank.Balance.Currency + " " + monetaryAccountBank.Balance.Value);
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Balance           │ " + monetaryAccountBank.Balance.Currency + " " + monetaryAccountBank.Balance.Value);
             }
            Console.Out.Write(@"
-  └────────────────┴───────────────────────────────────────────────────────
+  └───────────────────┴────────────────────────────────────────────────────
 ");
         }
 
@@ -237,15 +239,15 @@ namespace TinkerSrc.Lib
         private static void PrintPayment(Payment payment)
         {
             Console.Out.Write(@"
-  ┌────────────────┬───────────────────────────────────────────────────────
-  │ ID             │ " + payment.Id + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Description    │ " + payment.Description + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Amount         │ " + payment.Amount.Currency + " " + payment.Amount.Value + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Recipient      │ " + payment.CounterpartyAlias.LabelMonetaryAccount.DisplayName + @"
-  └────────────────┴───────────────────────────────────────────────────────
+  ┌───────────────────┬────────────────────────────────────────────────────
+  │ ID                │ " + payment.Id + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Description       │ " + payment.Description + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Amount            │ " + payment.Amount.Currency + " " + payment.Amount.Value + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Recipient         │ " + payment.CounterpartyAlias.LabelMonetaryAccount.DisplayName + @"
+  └───────────────────┴────────────────────────────────────────────────────
 ");
         }
 
@@ -262,17 +264,17 @@ namespace TinkerSrc.Lib
         public static void PrintRequest(RequestInquiry request)
         {
             Console.Out.Write(@"
-  ┌────────────────┬───────────────────────────────────────────────────────
-  │ ID             │ " + request.Id + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Description    │ " + request.Description + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Status         │ " + request.Status + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Amount         │ " + request.AmountInquired.Currency + " " + request.AmountInquired.Value + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Recipient      │ " + request.CounterpartyAlias.LabelMonetaryAccount.DisplayName + @"
-  └────────────────┴───────────────────────────────────────────────────────
+  ┌───────────────────┬────────────────────────────────────────────────────
+  │ ID                │ " + request.Id + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Description       │ " + request.Description + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Status            │ " + request.Status + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Amount            │ " + request.AmountInquired.Currency + " " + request.AmountInquired.Value + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Recipient         │ " + request.CounterpartyAlias.LabelMonetaryAccount.DisplayName + @"
+  └───────────────────┴────────────────────────────────────────────────────
 ");
         }
 
@@ -293,17 +295,17 @@ namespace TinkerSrc.Lib
             var monetaryAccountDescription = monetaryAccountBank.Description ?? "account description";
 
             Console.Out.Write(@"
-  ┌────────────────┬───────────────────────────────────────────────────────
-  │ ID             │ " + card.Id + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Type           │ " + card.Type + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Name on Card   │ " + card.NameOnCard + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Description    │ " + cardDescription + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Linked Account │ " + monetaryAccountDescription + " " + card.LabelMonetaryAccountCurrent.LabelMonetaryAccount.Iban + @"
-  └────────────────┴───────────────────────────────────────────────────────");
+  ┌───────────────────┬────────────────────────────────────────────────────
+  │ ID                │ " + card.Id + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Type              │ " + card.Type + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Name on Card      │ " + card.NameOnCard + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Description       │ " + cardDescription + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Linked Account    │ " + monetaryAccountDescription + " " + card.LabelMonetaryAccountCurrent.LabelMonetaryAccount.Iban + @"
+  └───────────────────┴────────────────────────────────────────────────────");
         }
 
         public static void PrintAllUserAlias(IEnumerable<Pointer> allUserAlias)
@@ -313,13 +315,21 @@ namespace TinkerSrc.Lib
             foreach (var alias in allUserAlias)
             {
                 Console.Out.Write(@"
-  ┌────────────────┬───────────────────────────────────────────────────────
-  │ Value          │ " + alias.Value + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Type           │ " + alias.Type + @"
-  ├────────────────┼───────────────────────────────────────────────────────
-  │ Login code     │ 000000
-  └────────────────┴───────────────────────────────────────────────────────"
+  ┌───────────────────┬────────────────────────────────────────────────────
+  │ Value             │ " + alias.Value + @"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Type              │ " + alias.Type
+                                  );
+                if (alias.Type.Equals(PointerTypePhone)) {
+                    Console.Out.Write(@"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Confirmation code │ 123456"
+                                      );
+                }
+                Console.Out.Write(@"
+  ├───────────────────┼────────────────────────────────────────────────────
+  │ Login code        │ 000000
+  └───────────────────┴────────────────────────────────────────────────────"
                                   );
             }
         }
