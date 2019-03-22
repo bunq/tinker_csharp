@@ -201,7 +201,7 @@ namespace TinkerSrc.Lib
 
         public List<Pointer> GetAllUserAlias()
         {
-            if (BunqContext.UserContext.isOnlyUserCompanySet())
+            if (BunqContext.UserContext.IsOnlyUserCompanySet())
             {
                 return BunqContext.UserContext.UserCompany.Alias;
             }
