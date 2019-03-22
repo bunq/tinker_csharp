@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Bunq.Sdk.Model.Generated.Endpoint;
+using Bunq.Sdk.Model.Generated.Object;
 using Tinker.Utils;
 using TinkerSrc.Lib;
 
@@ -24,8 +26,12 @@ namespace TinkerSrc
             Console.Out.WriteLine();
             Console.Out.WriteLine("    ...");
             Console.Out.WriteLine();
-
-            Card.Update(int.Parse(cardId), monetaryAccountCurrentId: int.Parse(accountId));
+            
+            
+            Card.Update(int.Parse(cardId), pinCodeAssignment: new List<CardPinAssignment>
+            {
+                new CardPinAssignment("PRIMARY"){MonetaryAccountId = int.Parse(accountId)}
+            });
             
             Console.Out.WriteLine();
             Console.Out.WriteLine("  | Account switched");
