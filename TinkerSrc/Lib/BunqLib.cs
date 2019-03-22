@@ -123,7 +123,7 @@ namespace TinkerSrc.Lib
             {
                 return BunqContext.UserContext.UserPerson.DisplayName;
             }
-            else if (BunqContext.UserContext.isOnlyUserCompanySet())
+            else if (BunqContext.UserContext.IsOnlyUserCompanySet())
             {
                 return BunqContext.UserContext.UserCompany.DisplayName;
             }

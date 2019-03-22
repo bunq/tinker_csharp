@@ -27,7 +27,7 @@ namespace TinkerSrc
             Console.Out.WriteLine("    ...");
             Console.Out.WriteLine();
 
-            if (BunqContext.UserContext.isOnlyUserCompanySet())
+            if (BunqContext.UserContext.IsOnlyUserCompanySet())
             {
                 UserCompany.Update(
                     notificationFilters: UpdateAllNotificationFilter(
