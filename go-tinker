@@ -20,7 +20,7 @@ USAGE="\
  │                               │ Run                                                 │
  ├───────────────────────────────┼─────────────────────────────────────────────────────┤
  │ 🔐   Create PSD2 Provider!    │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll CreatePsd2Configuration${ANSI_FORMAT_CLEAR} │
- │                               │ dotnet Tinker/TinkerSrc.dll CreatePsd2Configuration │
+ │                               │                                                     │
  │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                               │
  │                               │  ${ANSI_FORMAT_DIM}--env [SANDBOX/PRODUCTION]${ANSI_FORMAT_CLEAR}                         │
  │                               │  ${ANSI_FORMAT_DIM}--certificate [path]${ANSI_FORMAT_CLEAR}                               │
