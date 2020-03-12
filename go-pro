@@ -73,7 +73,7 @@ USAGE="\
  │                               │  ${ANSI_FORMAT_DIM}--name [string]${ANSI_FORMAT_CLEAR}                                         │
  ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ 📫️   Add Callback Url         │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll AddCallbackUrl  --production${ANSI_FORMAT_CLEAR} │
- │                               │ dotnet Tinker/TinkerSrc.dll AddCallbackUrl  --production                                                                                                   │
+ │                               │                                                          │
  │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                  │
  │                               │  ${ANSI_FORMAT_DIM}--url [url]${ANSI_FORMAT_CLEAR}                                             │
  └───────────────────────────────┴──────────────────────────────────────────────────────────┘
