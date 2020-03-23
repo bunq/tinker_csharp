@@ -19,64 +19,64 @@ ${ANSI_FORMAT_CLEAR}"
 
 # Usage constant.
 USAGE="\
- ┌───────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────────────┐
- │                               │ Run                                                                                                │
- ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ ┌───────────────────────────────┬──────────────────────────────────────────────────────────┐
+ │                               │ Run                                                      │
+ ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ 🔐   Create PSD2 Provider!    │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll CreatePsd2Configuration${ANSI_FORMAT_CLEAR}      │
- │                               │                                                                                                    │
- │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                        │
- │                               │  ${ANSI_FORMAT_DIM}--env [SANDBOX/PRODUCTION]${ANSI_FORMAT_CLEAR}                                  │
- │                               │  ${ANSI_FORMAT_DIM}--certificate [path]${ANSI_FORMAT_CLEAR}                                        │
- │                               │  ${ANSI_FORMAT_DIM}--chain [path]${ANSI_FORMAT_CLEAR}                                              │
- │                               │  ${ANSI_FORMAT_DIM}--key [path]${ANSI_FORMAT_CLEAR}                                                │
- ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │                               │                                                          │
+ │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                    │
+ │                               │  ${ANSI_FORMAT_DIM}--env [SANDBOX/PRODUCTION]${ANSI_FORMAT_CLEAR}                              │
+ │                               │  ${ANSI_FORMAT_DIM}--certificate [path]${ANSI_FORMAT_CLEAR}                                    │
+ │                               │  ${ANSI_FORMAT_DIM}--chain [path]${ANSI_FORMAT_CLEAR}                                          │
+ │                               │  ${ANSI_FORMAT_DIM}--key [path]${ANSI_FORMAT_CLEAR}                                            │
+ ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ 🔒   Create PSD2 OAuth Client │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll CreateOauthClient${ANSI_FORMAT_CLEAR}            │
- │                               │                                                                                                    │
- │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                        │
- │                               │  ${ANSI_FORMAT_DIM}--context [path]${ANSI_FORMAT_CLEAR}                                            │
- │                               │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                                            │
- ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │                               │                                                          │
+ │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                    │
+ │                               │  ${ANSI_FORMAT_DIM}--context [path]${ANSI_FORMAT_CLEAR}                                        │
+ │                               │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                                        │
+ ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ 🔓   Test PSD2 OAuth          │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll TestOauth${ANSI_FORMAT_CLEAR}                    │
- │                               │                                                                                                    │
- │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                        │
- │                               │  ${ANSI_FORMAT_DIM}--env [SANDBOX/PRODUCTION]${ANSI_FORMAT_CLEAR}                                  │
- │                               │  ${ANSI_FORMAT_DIM}--code [authcode]${ANSI_FORMAT_CLEAR}                                           │
- │                               │  ${ANSI_FORMAT_DIM}--configuration [path]${ANSI_FORMAT_CLEAR}                                      │
- │                               │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                                            │
- |───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │                               │                                                          │
+ │                               │  ${ANSI_FORMAT_DIM}Required parameters:${ANSI_FORMAT_CLEAR}                                    │
+ │                               │  ${ANSI_FORMAT_DIM}--env [SANDBOX/PRODUCTION]${ANSI_FORMAT_CLEAR}                              │
+ │                               │  ${ANSI_FORMAT_DIM}--code [authcode]${ANSI_FORMAT_CLEAR}                                       │
+ │                               │  ${ANSI_FORMAT_DIM}--configuration [path]${ANSI_FORMAT_CLEAR}                                  │
+ │                               │  ${ANSI_FORMAT_DIM}--redirect [uri]${ANSI_FORMAT_CLEAR}                                        │
+ |───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ ✅   Show Overview            │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll UserOverview  --production${ANSI_FORMAT_CLEAR}   │
- ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ 🔼   Make a payment           │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll MakePayment  --production${ANSI_FORMAT_CLEAR}    │
- │                               │                                                                                                    │
- │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
- │                               │  ${ANSI_FORMAT_DIM}--amount [euro]${ANSI_FORMAT_CLEAR}                                             │
- │                               │  ${ANSI_FORMAT_DIM}--recipient [email]${ANSI_FORMAT_CLEAR}                                         │
- │                               │  ${ANSI_FORMAT_DIM}--description [string]${ANSI_FORMAT_CLEAR}                                      │
- ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │                               │                                                          │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                  │
+ │                               │  ${ANSI_FORMAT_DIM}--amount [euro]${ANSI_FORMAT_CLEAR}                                         │
+ │                               │  ${ANSI_FORMAT_DIM}--recipient [email]${ANSI_FORMAT_CLEAR}                                     │
+ │                               │  ${ANSI_FORMAT_DIM}--description [string]${ANSI_FORMAT_CLEAR}                                  │
+ ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ 🔽   Make a request           │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll MakeRequest  --production${ANSI_FORMAT_CLEAR}    │
- │                               │                                                                                                    │
- │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
- │                               │  ${ANSI_FORMAT_DIM}--amount [euro]${ANSI_FORMAT_CLEAR}                                             │
- │                               │  ${ANSI_FORMAT_DIM}--recipient [email]${ANSI_FORMAT_CLEAR}                                         │
- │                               │  ${ANSI_FORMAT_DIM}--description [string]${ANSI_FORMAT_CLEAR}                                      │
- ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │                               │                                                                                                │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                  │
+ │                               │  ${ANSI_FORMAT_DIM}--amount [euro]${ANSI_FORMAT_CLEAR}                                         │
+ │                               │  ${ANSI_FORMAT_DIM}--recipient [email]${ANSI_FORMAT_CLEAR}                                     │
+ │                               │  ${ANSI_FORMAT_DIM}--description [string]${ANSI_FORMAT_CLEAR}                                  │
+ ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ 🔗   Link Card                │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll LinkCard  --production${ANSI_FORMAT_CLEAR}       │
- │                               │                                                                                                    │
- │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
- │                               │  ${ANSI_FORMAT_DIM}--card [id]${ANSI_FORMAT_CLEAR}                                                 │
- │                               │  ${ANSI_FORMAT_DIM}--account [id]${ANSI_FORMAT_CLEAR}                                              │
- ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │                               │                                                                                                │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                  │
+ │                               │  ${ANSI_FORMAT_DIM}--card [id]${ANSI_FORMAT_CLEAR}                                             │
+ │                               │  ${ANSI_FORMAT_DIM}--account [id]${ANSI_FORMAT_CLEAR}                                          │
+ ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ ✏️   Update Account            │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll UpdateAccount  --production${ANSI_FORMAT_CLEAR}  │
- │                               │                                                                                                    │
- │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
- │                               │  ${ANSI_FORMAT_DIM}--account [id]${ANSI_FORMAT_CLEAR}                                              │
- │                               │  ${ANSI_FORMAT_DIM}--name [string]${ANSI_FORMAT_CLEAR}                                             │
- ├───────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │                               │                                                          │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                  │
+ │                               │  ${ANSI_FORMAT_DIM}--account [id]${ANSI_FORMAT_CLEAR}                                          │
+ │                               │  ${ANSI_FORMAT_DIM}--name [string]${ANSI_FORMAT_CLEAR}                                         │
+ ├───────────────────────────────┼──────────────────────────────────────────────────────────┤
  │ 📫️   Add Callback Url         │ ${ANSI_FORMAT_VERBOSE}dotnet Tinker/TinkerSrc.dll AddCallbackUrl  --production${ANSI_FORMAT_CLEAR} │
- │                               │                                                                                                    │
- │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                      │
- │                               │  ${ANSI_FORMAT_DIM}--url [url]${ANSI_FORMAT_CLEAR}                                                 │
- └───────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────┘
+ │                               │                                                          │
+ │                               │  ${ANSI_FORMAT_DIM}Additional parameters:${ANSI_FORMAT_CLEAR}                                  │
+ │                               │  ${ANSI_FORMAT_DIM}--url [url]${ANSI_FORMAT_CLEAR}                                             │
+ └───────────────────────────────┴──────────────────────────────────────────────────────────┘
 "
 
 # Endpoint constants.

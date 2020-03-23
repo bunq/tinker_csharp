@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bunq.Sdk.Context;
-using Bunq.Sdk.Exception;
-using Bunq.Sdk.Model.Generated.Endpoint;
+using Bunq.Sdk.Model.Core;
 using Bunq.Sdk.Model.Generated.Object;
 using Tinker.Utils;
 using TinkerSrc.Lib;
@@ -27,28 +25,16 @@ namespace TinkerSrc
             Console.Out.WriteLine("    ...");
             Console.Out.WriteLine();
 
-            if (BunqContext.UserContext.IsOnlyUserCompanySet())
+            var allNotificationFilter = NotificationFilterUrlUserInternal.List().Value;
+            var allNotificationFilterUrl = new List<NotificationFilterUrl>();
+
+            foreach (var notificationFilterUser in allNotificationFilter)
             {
-                UserCompany.Update(
-                    notificationFilters: UpdateAllNotificationFilter(
-                        BunqContext.UserContext.UserCompany.NotificationFilters,
-                        callbackUrl
-                    )
-                );
+                allNotificationFilterUrl.AddRange(notificationFilterUser.NotificationFilters);
             }
-            else if (BunqContext.UserContext.IsOnlyUserPersonSet())
-            {
-                UserPerson.Update(
-                    notificationFilters: UpdateAllNotificationFilter(
-                        BunqContext.UserContext.UserPerson.NotificationFilters,
-                        callbackUrl
-                    )
-                );
-            }
-            else
-            {
-                throw new BunqException("Unexpected user type found.");
-            }
+
+            allNotificationFilterUrl = UpdateAllNotificationFilter(allNotificationFilterUrl, callbackUrl);
+            NotificationFilterUrlUserInternal.CreateWithListResponse(allNotificationFilterUrl);
             
             Console.Out.WriteLine();
             Console.Out.WriteLine("  | Callback URL added");
@@ -60,12 +46,12 @@ namespace TinkerSrc
             bunq.UpdateContext();
         }
 
-        private List<NotificationFilter> UpdateAllNotificationFilter(
-            List<NotificationFilter> allNotificationFilter,
+        private List<NotificationFilterUrl> UpdateAllNotificationFilter(
+            List<NotificationFilterUrl> allNotificationFilter,
             string callbackUrl
         )
         {
-            List<NotificationFilter> allNotificationFilterUpdated = new List<NotificationFilter>();
+            List<NotificationFilterUrl> allNotificationFilterUpdated = new List<NotificationFilterUrl>();
 
             foreach (var notificationFilter in allNotificationFilter)
             {
@@ -75,7 +61,7 @@ namespace TinkerSrc
                 }
             }
             
-            allNotificationFilterUpdated.Add(new NotificationFilter("URL", callbackUrl, "MUTATION"));
+            allNotificationFilterUpdated.Add(new NotificationFilterUrl("MUTATION", callbackUrl));
 
             return allNotificationFilterUpdated;
         }
