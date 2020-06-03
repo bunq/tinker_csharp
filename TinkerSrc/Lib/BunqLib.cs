@@ -225,7 +225,7 @@ namespace TinkerSrc.Lib
             httpClient.DefaultRequestHeaders.Add("X-Bunq-Region", "en_US");
             httpClient.DefaultRequestHeaders.Add("User-Agent", "hoi");
 
-            var requestTask = httpClient.PostAsync(ApiEnvironmentType.SANDBOX.BaseUri + "sandbox-user", null);
+            var requestTask = httpClient.PostAsync(ApiEnvironmentType.SANDBOX.BaseUri + "sandbox-user-person", null);
             requestTask.Wait();
 
             var responseString = requestTask.Result.Content.ReadAsStringAsync().Result;
